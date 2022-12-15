@@ -66,7 +66,7 @@
         android:padding="12dp"
         android:text="choose start date"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@id/tvChooseStartTime"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvStartDate" />
@@ -83,7 +83,7 @@
         android:padding="12dp"
         android:text="choose start time"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tvChooseStartDate"
         app:layout_constraintTop_toBottomOf="@id/tvStartDate" />
@@ -93,11 +93,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
+        android:gravity="start"
+        android:padding="12dp"
         android:text="choose start time"
         android:textColor="@color/black"
         android:textSize="12sp"
-        android:gravity="start"
-        android:padding="12dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -115,6 +115,7 @@
         android:padding="12dp"
         android:text="choose End Date"
         android:textColor="@color/black"
+        android:textSize="14sp"
         app:layout_constraintEnd_toStartOf="@id/tvChooseEndTime"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvEndDate" />
@@ -131,6 +132,7 @@
         android:padding="12dp"
         android:text="choose End time"
         android:textColor="@color/black"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/tvChooseEndDate"
         app:layout_constraintTop_toBottomOf="@id/tvEndDate" />
