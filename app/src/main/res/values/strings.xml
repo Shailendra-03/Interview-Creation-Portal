@@ -3,4 +3,15 @@
     <string name="start_time">Start Time : %1$s</string>
     <string name="end_time">End Time : %1$s</string>
     <string name="number_of_participants">Number of participants : %1$s</string>
+    <string name="please_enter_a_meeting_name">Please enter a meeting name</string>
+    <string name="some_error_occurred">Some error occurred</string>
+    <string name="update">Update</string>
+    <string name="update_meeting">Update meeting</string>
+    <string name="please_select_start_date_and_time_first">Please select start date and time first</string>
+    <string name="please_select_start_date_and_time">Please select start date and time</string>
+    <string name="please_select_end_date_and_time">Please select end date and time</string>
+    <string name="select_atleast_two_participants">Please select atleast two participants</string>
+    <string name="start_time_can_not_be_greater_than_end_time">Start time can not be greater than end time</string>
+    <string name="time_slot_collosion_text">One of the participants has another meeting scheduled. Please select other time slots</string>
+    <string name="meeting_scheduled_successfully">Meeting scheduled successfully</string>
 </resources>

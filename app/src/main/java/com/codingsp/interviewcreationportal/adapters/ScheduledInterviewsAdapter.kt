@@ -63,7 +63,7 @@ class ScheduledInterviewsAdapter(
             notifyItemChanged(position)
         } else {
             list.add(meeting)
-            notifyItemInserted(position)
+            notifyItemInserted(list.size)
         }
     }
 }

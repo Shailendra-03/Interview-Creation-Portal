@@ -13,19 +13,19 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 class MainViewModel(
-    application1: Application
+    private val application1: Application
 ): AndroidViewModel(application1) {
 
     private val repository by lazy {
-        Repository()
+        Repository(application1)
     }
 
     private var _meetingsList = MutableStateFlow<ArrayList<Meeting>>(arrayListOf())
     val meetingList = _meetingsList.asStateFlow()
 
 
-    private var _errormessage = MutableSharedFlow<String>()
-    val errorMessage = _errormessage.asSharedFlow()
+    private var _errorMessage = MutableSharedFlow<String>()
+    val errorMessage = _errorMessage.asSharedFlow()
 
     fun getInterviewsList() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -42,7 +42,7 @@ class MainViewModel(
                 _meetingsList.value = response.data ?: arrayListOf()
             }
             is Resource.Error -> {
-                _errormessage.emit(response.message ?: "Some Error Occurred")
+                _errorMessage.emit(response.message ?: application1.getString(R.string.some_error_occurred))
             }
         }
     }

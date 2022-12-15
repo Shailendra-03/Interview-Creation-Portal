@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity(), InterviewClickListeners, View.OnClickL
 
     private val meetingResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if(it.resultCode == RESULT_OK) {
-            val data = it?.data?.getParcelableExtra<Meeting>(Constants.MEETING_EXTRA)
+            val data = it?.data?.extras?.getParcelable(Constants.MEETING_EXTRA) as Meeting?
             if(data != null && currentPosition != -1) {
                 adapter.updateItem(currentPosition, data)
                 currentPosition = -1

@@ -1,5 +1,6 @@
 package com.codingsp.interviewcreationportal
 
+import android.annotation.SuppressLint
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
@@ -20,18 +21,19 @@ import com.codingsp.interviewcreationportal.utils.TimeUtils
 import com.google.android.material.snackbar.Snackbar
 import java.util.*
 
-class MeetingActivity : AppCompatActivity(), InterviewClickListeners, View.OnClickListener, DatePickerDialog.OnDateSetListener,
+class MeetingActivity : AppCompatActivity(), InterviewClickListeners, View.OnClickListener,
+    DatePickerDialog.OnDateSetListener,
     TimePickerDialog.OnTimeSetListener {
 
-    private lateinit var binding : ActivityMeetingBinding
-    private var meeting: Meeting? =null
-    private val meetingViewModel : MeetingViewModel by viewModels()
+    private lateinit var binding: ActivityMeetingBinding
+    private var meeting: Meeting? = null
+    private val meetingViewModel: MeetingViewModel by viewModels()
     private lateinit var adapter: UserListAdapter
     private var isStartTime = true
-    private var startDatePicker :DatePicker ?= null
-    private var endDatePicker :DatePicker ?= null
-    private var startTimePicker :TimePicker ?= null
-    private var endTimePicker :TimePicker ?= null
+    private var startDatePicker: DatePicker? = null
+    private var endDatePicker: DatePicker? = null
+    private var startTimePicker: TimePicker? = null
+    private var endTimePicker: TimePicker? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,15 +64,16 @@ class MeetingActivity : AppCompatActivity(), InterviewClickListeners, View.OnCli
 
     private fun observeLifecycleEvents() {
         meetingViewModel.result.observe(this) {
-            when(it){
+            when (it) {
                 is Resource.Success -> {
+                    showSnackBar(it.message)
                     setResult(RESULT_OK, Intent().apply {
                         putExtra(Constants.MEETING_EXTRA, meeting)
                     })
                     finish()
                 }
                 is Resource.Error -> {
-                    Snackbar.make(binding.root, it.message ?: "Some Error Occurred", Snackbar.LENGTH_LONG).show()
+                    showSnackBar(it.message)
                 }
             }
         }
@@ -80,7 +83,7 @@ class MeetingActivity : AppCompatActivity(), InterviewClickListeners, View.OnCli
     }
 
     private fun handleIntent() {
-        if(intent.hasExtra(Constants.MEETING_EXTRA)) {
+        if (intent.hasExtra(Constants.MEETING_EXTRA)) {
             meeting = intent.getParcelableExtra(Constants.MEETING_EXTRA)
             updateViews()
         }
@@ -93,13 +96,13 @@ class MeetingActivity : AppCompatActivity(), InterviewClickListeners, View.OnCli
             binding.tvChooseStartTime.text = TimeUtils.getTime(it.startTime)
             binding.tvChooseEndTime.text = TimeUtils.getTime(it.endTime)
             binding.tvChooseEndDate.text = TimeUtils.getDate(it.endTime)
-            binding.btnSubmit.text = "Update"
-            binding.tvTitle.text = "Update Meeting"
+            binding.btnSubmit.text = getString(R.string.update)
+            binding.tvTitle.text = getString(R.string.update_meeting)
         }
     }
 
     override fun onClick(view: View?) {
-        when(view?.id) {
+        when (view?.id) {
             R.id.tvChooseStartDate -> {
                 isStartTime = true
                 getDatePickerDialog().show()
@@ -109,16 +112,15 @@ class MeetingActivity : AppCompatActivity(), InterviewClickListeners, View.OnCli
                 getTimePickerDialog().show()
             }
             R.id.tvChooseEndDate -> {
-                if(startDatePicker == null || startTimePicker == null) {
-                    Snackbar.make(binding.root, "Please select start Date and time First", Snackbar.LENGTH_LONG).show()
+                if ((startDatePicker == null || startTimePicker == null) && meeting == null) {
                     return
                 }
                 isStartTime = false
                 getDatePickerDialog().show()
             }
             R.id.tvChooseEndTime -> {
-                if(startDatePicker == null || startTimePicker == null) {
-                    Snackbar.make(binding.root, "Please select start Date and time First", Snackbar.LENGTH_LONG).show()
+                if ((startDatePicker == null || startTimePicker == null) && meeting == null) {
+                    showSnackBar(getString(R.string.please_select_start_date_and_time_first))
                     return
                 }
                 isStartTime = false
@@ -131,38 +133,63 @@ class MeetingActivity : AppCompatActivity(), InterviewClickListeners, View.OnCli
     }
 
     private fun checkForBasicConditionsAndContinue() {
-        if(startDatePicker == null || startTimePicker == null) {
-            Snackbar.make(binding.root, "Please select startDate And Time", Snackbar.LENGTH_LONG).show()
+        if (binding.tietName.text.toString().isEmpty()) {
+            showSnackBar(getString(R.string.please_enter_a_meeting_name))
+        }
+        if ((startDatePicker == null || startTimePicker == null) && meeting == null) {
+            showSnackBar(getString(R.string.please_select_start_date_and_time))
             return
         }
-        if(endDatePicker == null || endTimePicker == null) {
-            Snackbar.make(binding.root, "Please select End Date And Time", Snackbar.LENGTH_LONG).show()
+        if ((endDatePicker == null || endTimePicker == null) && meeting == null) {
+            showSnackBar(getString(R.string.please_select_end_date_and_time))
             return
         }
         val calendar = Calendar.getInstance()
-        calendar.set(startDatePicker!!.year, startDatePicker!!.month,startDatePicker!!.dayOfMonth, startTimePicker!!.hour, startTimePicker!!.minute,0)
+        calendar.set(
+            startDatePicker!!.year,
+            startDatePicker!!.month,
+            startDatePicker!!.dayOfMonth,
+            startTimePicker!!.hour,
+            startTimePicker!!.minute,
+            0
+        )
         val startTime = calendar.time.time
-        calendar.set(startDatePicker!!.year, startDatePicker!!.month,startDatePicker!!.dayOfMonth, endTimePicker!!.hour, endTimePicker!!.minute,0)
+        calendar.set(
+            startDatePicker!!.year,
+            startDatePicker!!.month,
+            startDatePicker!!.dayOfMonth,
+            endTimePicker!!.hour,
+            endTimePicker!!.minute,
+            0
+        )
         val endTime = calendar.time.time
-        meeting = Meeting(meeting?.id, binding.tietName.text.toString(), startTime,  endTime, adapter.selectedUser)
-                meetingViewModel.updateMeeting(meeting!!)
+        meeting = Meeting(
+            meeting?.id,
+            binding.tietName.text.toString(),
+            startTime,
+            endTime,
+            adapter.selectedUser
+        )
+        meetingViewModel.updateMeeting(meeting!!)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onDateSet(datePicker: DatePicker?, year: Int, monthOfyear: Int, day: Int) {
-        if(isStartTime) {
-            binding.tvChooseStartDate.text = "$day/${monthOfyear +1}/$year"
+        if (isStartTime) {
+            binding.tvChooseStartDate.text = "$day/${monthOfyear + 1}/$year"
             startDatePicker = datePicker
-            if(endDatePicker == null) {
+            if (endDatePicker == null && meeting == null) {
                 endDatePicker = datePicker
-                binding.tvChooseEndDate.text = "$day/${monthOfyear +1}/$year"
+                binding.tvChooseEndDate.text = "$day/${monthOfyear + 1}/$year"
             }
         } else {
             endDatePicker = datePicker
         }
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onTimeSet(timePicker: TimePicker?, hour: Int, minute: Int) {
-        if(isStartTime) {
+        if (isStartTime) {
             binding.tvChooseStartTime.text = "$hour:$minute"
             startTimePicker = timePicker
         } else {
@@ -171,11 +198,31 @@ class MeetingActivity : AppCompatActivity(), InterviewClickListeners, View.OnCli
         }
     }
 
-    fun getDatePickerDialog(): DatePickerDialog {
-        return DatePickerDialog(this,this,Calendar.getInstance().get(Calendar.YEAR), Calendar.getInstance().get(Calendar.MONTH), Calendar.getInstance().get(Calendar.DAY_OF_MONTH))
+    private fun showSnackBar(message: String?) {
+        Snackbar.make(
+            binding.root,
+            message ?: getString(R.string.some_error_occurred),
+            Snackbar.LENGTH_LONG
+        ).show()
     }
 
-    fun getTimePickerDialog(): TimePickerDialog {
-        return TimePickerDialog(this, this, Calendar.getInstance().get(Calendar.HOUR_OF_DAY), Calendar.getInstance().get(Calendar.MINUTE), true)
+    private fun getDatePickerDialog(): DatePickerDialog {
+        return DatePickerDialog(
+            this,
+            this,
+            Calendar.getInstance().get(Calendar.YEAR),
+            Calendar.getInstance().get(Calendar.MONTH),
+            Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
+        )
+    }
+
+    private fun getTimePickerDialog(): TimePickerDialog {
+        return TimePickerDialog(
+            this,
+            this,
+            Calendar.getInstance().get(Calendar.HOUR_OF_DAY),
+            Calendar.getInstance().get(Calendar.MINUTE),
+            true
+        )
     }
 }

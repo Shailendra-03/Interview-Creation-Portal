@@ -13,10 +13,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.collections.ArrayList
 
-class MeetingViewModel(application1: Application): AndroidViewModel(application1) {
+class MeetingViewModel(val application1: Application): AndroidViewModel(application1) {
 
     private val repository by lazy {
-        Repository()
+        Repository(application1)
     }
 
     private var _result = MutableLiveData<Resource<String>>()
@@ -52,7 +52,7 @@ class MeetingViewModel(application1: Application): AndroidViewModel(application1
                 _userList.value = response.data ?: arrayListOf()
             }
             is Resource.Error -> {
-                _errorMessage.value = response.message ?: "Some Error Occurred"
+                _errorMessage.value = response.message ?: application1.getString(R.string.some_error_occurred)
             }
         }
     }
