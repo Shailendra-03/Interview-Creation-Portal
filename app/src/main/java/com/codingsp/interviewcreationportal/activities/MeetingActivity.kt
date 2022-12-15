@@ -1,4 +1,4 @@
-package com.codingsp.interviewcreationportal
+package com.codingsp.interviewcreationportal.activities
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
@@ -11,6 +11,8 @@ import android.widget.DatePicker
 import android.widget.TimePicker
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.codingsp.interviewcreationportal.viewmodels.MeetingViewModel
+import com.codingsp.interviewcreationportal.R
 import com.codingsp.interviewcreationportal.adapters.UserListAdapter
 import com.codingsp.interviewcreationportal.databinding.ActivityMeetingBinding
 import com.codingsp.interviewcreationportal.interfces.InterviewClickListeners
@@ -135,6 +137,7 @@ class MeetingActivity : AppCompatActivity(), InterviewClickListeners, View.OnCli
     private fun checkForBasicConditionsAndContinue() {
         if (binding.tietName.text.toString().isEmpty()) {
             showSnackBar(getString(R.string.please_enter_a_meeting_name))
+            return
         }
         if ((startDatePicker == null || startTimePicker == null) && meeting == null) {
             showSnackBar(getString(R.string.please_select_start_date_and_time))
@@ -146,20 +149,20 @@ class MeetingActivity : AppCompatActivity(), InterviewClickListeners, View.OnCli
         }
         val calendar = Calendar.getInstance()
         calendar.set(
-            startDatePicker!!.year,
-            startDatePicker!!.month,
-            startDatePicker!!.dayOfMonth,
-            startTimePicker!!.hour,
-            startTimePicker!!.minute,
+            startDatePicker?.year ?: TimeUtils.getYear(meeting!!.startTime!!),
+            startDatePicker?.month ?: TimeUtils.getMonth(meeting!!.startTime!!),
+            startDatePicker?.dayOfMonth ?: TimeUtils.getDay(meeting!!.startTime!!),
+            startTimePicker?.hour ?: TimeUtils.getHour(meeting!!.startTime!!),
+            startTimePicker?.minute ?: TimeUtils.getMinutes(meeting!!.startTime!!),
             0
         )
         val startTime = calendar.time.time
         calendar.set(
-            startDatePicker!!.year,
-            startDatePicker!!.month,
-            startDatePicker!!.dayOfMonth,
-            endTimePicker!!.hour,
-            endTimePicker!!.minute,
+            endDatePicker?.year ?: TimeUtils.getYear(meeting!!.endTime!!),
+            endDatePicker?.month ?: TimeUtils.getMonth(meeting!!.endTime!!),
+            endDatePicker?.dayOfMonth ?: TimeUtils.getDay(meeting!!.endTime!!),
+            endTimePicker?.hour ?: TimeUtils.getHour(meeting!!.endTime!!),
+            endTimePicker?.minute ?: TimeUtils.getMinutes(meeting!!.endTime!!),
             0
         )
         val endTime = calendar.time.time
@@ -183,6 +186,7 @@ class MeetingActivity : AppCompatActivity(), InterviewClickListeners, View.OnCli
                 binding.tvChooseEndDate.text = "$day/${monthOfyear + 1}/$year"
             }
         } else {
+            binding.tvChooseEndDate.text = "$day/${monthOfyear + 1}/$year"
             endDatePicker = datePicker
         }
     }

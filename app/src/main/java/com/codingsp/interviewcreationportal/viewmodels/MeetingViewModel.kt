@@ -1,10 +1,12 @@
-package com.codingsp.interviewcreationportal
+package com.codingsp.interviewcreationportal.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.codingsp.interviewcreationportal.R
+import com.codingsp.interviewcreationportal.repositories.Repository
 import com.codingsp.interviewcreationportal.model.Meeting
 import com.codingsp.interviewcreationportal.model.User
 import com.codingsp.interviewcreationportal.utils.Resource

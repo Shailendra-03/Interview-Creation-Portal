@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.codingsp.interviewcreationportal.R
 import com.codingsp.interviewcreationportal.databinding.ItemSelectUserBinding
-import com.codingsp.interviewcreationportal.databinding.ItemUserBinding
 import com.codingsp.interviewcreationportal.model.User
 
 class UserListAdapter(

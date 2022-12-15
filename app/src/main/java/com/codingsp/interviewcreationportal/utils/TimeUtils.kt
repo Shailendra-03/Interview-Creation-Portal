@@ -24,4 +24,50 @@ object TimeUtils {
             ""
         }
     }
+
+    fun getYear(timeInMillis: Long): Int {
+        return try {
+            val simpleDateFormat = SimpleDateFormat("yyyy", Locale.ENGLISH)
+            return simpleDateFormat.format(timeInMillis).toInt()
+        }catch (e:Exception) {
+            Calendar.getInstance().time.year
+        }
+    }
+
+    fun getMonth(timeInMillis: Long): Int {
+        return try {
+            val simpleDateFormat = SimpleDateFormat("MM", Locale.ENGLISH)
+            return simpleDateFormat.format(timeInMillis).toInt() -1
+        }catch (e:Exception) {
+            Calendar.getInstance().time.month
+        }
+    }
+
+    fun getDay(timeInMillis: Long): Int {
+        return try {
+            val simpleDateFormat = SimpleDateFormat("dd", Locale.ENGLISH)
+            return simpleDateFormat.format(timeInMillis).toInt()
+        }catch (e:Exception) {
+            Calendar.getInstance().time.day
+        }
+    }
+
+    fun getHour(timeInMillis: Long): Int {
+        return try {
+            val simpleDateFormat = SimpleDateFormat("HH", Locale.ENGLISH)
+            return simpleDateFormat.format(timeInMillis).toInt()
+        }catch (e:Exception) {
+            Calendar.getInstance().time.day
+        }
+    }
+
+    fun getMinutes(timeInMillis: Long): Int {
+        return try {
+            val simpleDateFormat = SimpleDateFormat("mm", Locale.ENGLISH)
+            return simpleDateFormat.format(timeInMillis).toInt()
+        }catch (e:Exception) {
+            Calendar.getInstance().time.day
+        }
+    }
+
 }

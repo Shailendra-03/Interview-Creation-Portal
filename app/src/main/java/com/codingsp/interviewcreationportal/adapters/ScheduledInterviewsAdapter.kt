@@ -24,9 +24,13 @@ class ScheduledInterviewsAdapter(
 
         fun setDataOnView(item: Meeting) {
             meeting = item
+            val startDate = TimeUtils.getDate(item.startTime)
+            val startTime = TimeUtils.getTime(item.startTime)
+            val endDate = TimeUtils.getDate(item.endTime)
+            val endTime = TimeUtils.getTime(item.endTime)
             binding.tvName.text = item.name ?: ""
-            binding.tvStartTime.text = String.format(context.getString(R.string.start_time), TimeUtils.getTime(item.startTime))
-            binding.tvEndTime.text = String.format(context.getString(R.string.end_time), TimeUtils.getTime(item.endTime))
+            binding.tvStartTime.text = String.format(context.getString(R.string.start_time), "$startDate - $startTime")
+            binding.tvEndTime.text = String.format(context.getString(R.string.end_time), "$endDate - $endTime")
             binding.tvNumberOfParticipants.text = String.format(context.getString(R.string.number_of_participants), item.invitedUsers.size)
             binding.itemInterview.setOnClickListener(this)
             binding.tvView.setOnClickListener(this)
@@ -58,7 +62,7 @@ class ScheduledInterviewsAdapter(
     }
 
     fun updateItem(position: Int, meeting: Meeting) {
-        if(position < list.size) {
+        if(position < list.size && position != -1) {
             list[position] = meeting
             notifyItemChanged(position)
         } else {

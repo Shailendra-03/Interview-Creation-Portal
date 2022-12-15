@@ -9,7 +9,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.codingsp.interviewcreationportal.MeetingViewModel
+import com.codingsp.interviewcreationportal.viewmodels.MeetingViewModel
 import com.codingsp.interviewcreationportal.R
 import com.codingsp.interviewcreationportal.adapters.SelectUserAdapter
 import com.codingsp.interviewcreationportal.databinding.DialogSelectUserListBinding

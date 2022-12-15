@@ -1,4 +1,4 @@
-package com.codingsp.interviewcreationportal
+package com.codingsp.interviewcreationportal.activities
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -9,6 +9,8 @@ import androidx.activity.viewModels
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.codingsp.interviewcreationportal.viewmodels.MainViewModel
+import com.codingsp.interviewcreationportal.R
 import com.codingsp.interviewcreationportal.adapters.ScheduledInterviewsAdapter
 import com.codingsp.interviewcreationportal.databinding.ActivityMainBinding
 import com.codingsp.interviewcreationportal.interfces.InterviewClickListeners
@@ -27,7 +29,7 @@ class MainActivity : AppCompatActivity(), InterviewClickListeners, View.OnClickL
     private val meetingResultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
         if(it.resultCode == RESULT_OK) {
             val data = it?.data?.extras?.getParcelable(Constants.MEETING_EXTRA) as Meeting?
-            if(data != null && currentPosition != -1) {
+            if(data != null) {
                 adapter.updateItem(currentPosition, data)
                 currentPosition = -1
             }
@@ -85,7 +87,7 @@ class MainActivity : AppCompatActivity(), InterviewClickListeners, View.OnClickL
     override fun onClick(view: View?) {
         when(view?.id) {
             R.id.fabAddMeeting -> {
-                startActivity(Intent(this, MeetingActivity::class.java))
+                meetingResultLauncher.launch(Intent(this, MeetingActivity::class.java))
             }
         }
     }

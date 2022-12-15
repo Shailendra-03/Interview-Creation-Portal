@@ -1,7 +1,9 @@
-package com.codingsp.interviewcreationportal
+package com.codingsp.interviewcreationportal.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.*
+import com.codingsp.interviewcreationportal.R
+import com.codingsp.interviewcreationportal.repositories.Repository
 import com.codingsp.interviewcreationportal.model.Meeting
 import com.codingsp.interviewcreationportal.utils.Resource
 import kotlinx.coroutines.Dispatchers

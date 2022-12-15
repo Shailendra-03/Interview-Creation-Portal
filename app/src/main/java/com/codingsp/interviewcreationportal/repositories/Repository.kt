@@ -1,14 +1,13 @@
-package com.codingsp.interviewcreationportal
+package com.codingsp.interviewcreationportal.repositories
 
 import android.app.Application
-import android.icu.util.Freezable
+import com.codingsp.interviewcreationportal.R
 import com.codingsp.interviewcreationportal.model.Meeting
 import com.codingsp.interviewcreationportal.model.User
 import com.codingsp.interviewcreationportal.utils.FirebaseConstants
 import com.codingsp.interviewcreationportal.utils.Resource
 import com.google.firebase.firestore.FieldValue
 import kotlinx.coroutines.tasks.await
-import java.lang.Appendable
 
 class Repository(private val application: Application) {
 
