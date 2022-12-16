@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.collections.ArrayList
 
-class MeetingViewModel(val application1: Application): AndroidViewModel(application1) {
+class MeetingViewModel(val application1: Application) : AndroidViewModel(application1) {
 
     private val repository by lazy {
         Repository(application1)
@@ -25,10 +25,10 @@ class MeetingViewModel(val application1: Application): AndroidViewModel(applicat
     val result: LiveData<Resource<String>> get() = _result
 
     private var _userList = MutableLiveData<ArrayList<User>>(arrayListOf())
-    val userList : LiveData<ArrayList<User>> get() = _userList
+    val userList: LiveData<ArrayList<User>> get() = _userList
 
     private var _errorMessage = MutableLiveData<String>()
-    val errorMessage : LiveData<String> get() = _errorMessage
+    val errorMessage: LiveData<String> get() = _errorMessage
 
     fun updateMeeting(meeting: Meeting) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -49,7 +49,7 @@ class MeetingViewModel(val application1: Application): AndroidViewModel(applicat
     }
 
     private fun handleResponseData(response: Resource<ArrayList<User>>) {
-        when(response) {
+        when (response) {
             is Resource.Success -> {
                 _userList.value = response.data ?: arrayListOf()
             }

@@ -115,6 +115,7 @@ class MeetingActivity : AppCompatActivity(), InterviewClickListeners, View.OnCli
             }
             R.id.tvChooseEndDate -> {
                 if ((startDatePicker == null || startTimePicker == null) && meeting == null) {
+                    showSnackBar(getString(R.string.please_select_start_date_and_time_first))
                     return
                 }
                 isStartTime = false
@@ -211,13 +212,15 @@ class MeetingActivity : AppCompatActivity(), InterviewClickListeners, View.OnCli
     }
 
     private fun getDatePickerDialog(): DatePickerDialog {
-        return DatePickerDialog(
+        val datePickerDialog =  DatePickerDialog(
             this,
             this,
             Calendar.getInstance().get(Calendar.YEAR),
             Calendar.getInstance().get(Calendar.MONTH),
             Calendar.getInstance().get(Calendar.DAY_OF_MONTH)
         )
+        datePickerDialog.datePicker.minDate = System.currentTimeMillis()
+        return datePickerDialog
     }
 
     private fun getTimePickerDialog(): TimePickerDialog {

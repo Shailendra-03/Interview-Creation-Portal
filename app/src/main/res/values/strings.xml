@@ -14,4 +14,5 @@
     <string name="start_time_can_not_be_greater_than_end_time">Start time can not be greater than end time</string>
     <string name="time_slot_collosion_text">One of the participants has another meeting scheduled. Please select other time slots</string>
     <string name="meeting_scheduled_successfully">Meeting scheduled successfully</string>
+    <string name="time_can_not_be_before_current_time">Scheduled timings can not be before the current time.</string>
 </resources>

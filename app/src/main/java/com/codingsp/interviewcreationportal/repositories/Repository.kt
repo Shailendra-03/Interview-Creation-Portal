@@ -7,6 +7,7 @@ import com.codingsp.interviewcreationportal.model.User
 import com.codingsp.interviewcreationportal.utils.FirebaseConstants
 import com.codingsp.interviewcreationportal.utils.Resource
 import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.Query
 import kotlinx.coroutines.tasks.await
 
 class Repository(private val application: Application) {
@@ -32,8 +33,13 @@ class Repository(private val application: Application) {
     }
 
     suspend fun updateMeeting(meeting: Meeting): Resource<String> {
+        if(meeting.name.isNullOrEmpty() || meeting.startTime == null || meeting.endTime == null) return Resource.Error(application.getString(R.string.some_error_occurred))
         if (meeting.invitedUsers.size < 2) return Resource.Error(application.getString(R.string.select_atleast_two_participants))
         if (meeting.startTime!! >= meeting.endTime!!) return Resource.Error(application.getString(R.string.start_time_can_not_be_greater_than_end_time))
+        val currentTime = System.currentTimeMillis();
+        if(currentTime > meeting.startTime!! || currentTime > meeting.endTime!!) {
+            return Resource.Error(application.getString(R.string.time_can_not_be_before_current_time))
+        }
         var meetings: List<Meeting> = emptyList()
         try {
             val docRef = FirebaseConstants.MEETING_COLLECTION.whereArrayContainsAny(
